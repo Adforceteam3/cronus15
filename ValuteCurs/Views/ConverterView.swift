@@ -27,9 +27,10 @@ struct ConverterView: View {
                     
                     // Daily Login Progress
                     DailyLoginProgressView()
-                        .padding(.top, 32)
+                        .padding(.top, 24)
+                        .padding(.bottom, 8)
 
-                    VStack(spacing: 24) {
+                    VStack(spacing: 20) {
                     
                     // Amount Input Card with shimmer effect
                     GroupBox {
@@ -37,6 +38,7 @@ struct ConverterView: View {
                             Text("Amount")
                                 .font(.headline)
                                 .foregroundColor(.primary)
+                                .padding(.leading, 4)
                             
                             ZStack {
                                 HStack {
@@ -52,9 +54,10 @@ struct ConverterView: View {
                                             triggerPulse()
                                         }
                                 }
-                                .padding()
+                                .padding(.horizontal, 16)
+                                .padding(.vertical, 16)
                                 .background(Color(.systemGray6).opacity(0.5))
-                                .cornerRadius(12)
+                                .cornerRadius(16)
                                 .overlay(
                                     // Shimmer effect when typing
                                     LinearGradient(
@@ -84,112 +87,131 @@ struct ConverterView: View {
                     
                     // Currency Selection Card
                     GroupBox {
-                        VStack(spacing: 20) {
-                            HStack(alignment: .center, spacing: 20) {
-                                // From Currency
-                                VStack(alignment: .leading, spacing: 4) {
-                                    Text("From")
-                                        .font(.caption)
-                                        .foregroundColor(.secondary)
-                                    
-                                    Menu {
-                                        ForEach(currencies, id: \.self) { currency in
-                                            Button(action: {
-                                                fromCurrency = currency
-                                                calculateResult()
-                                            }) {
-                                                HStack {
-                                                    Text(currency)
-                                                        .font(.system(size: 16, weight: .bold))
-                                                    Text(getCurrencyName(currency))
-                                                        .font(.system(size: 14, weight: .medium))
-                                                        .foregroundColor(.secondary)
-                                                }
+                        VStack(spacing: 24) {
+                            // From Currency Section
+                            VStack(alignment: .leading, spacing: 8) {
+                                Text("From")
+                                    .font(.caption)
+                                    .foregroundColor(.secondary)
+                                    .padding(.leading, 4)
+                                
+                                Menu {
+                                    ForEach(currencies, id: \.self) { currency in
+                                        Button(action: {
+                                            fromCurrency = currency
+                                            calculateResult()
+                                        }) {
+                                            HStack {
+                                                Text(currency)
+                                                    .font(.system(size: 16, weight: .bold))
+                                                Text(getCurrencyName(currency))
+                                                    .font(.system(size: 14, weight: .medium))
+                                                    .foregroundColor(.secondary)
                                             }
                                         }
-                                    } label: {
-                                        HStack {
-                                            Text(fromCurrency)
-                                                .font(.system(size: 20, weight: .bold))
-                                                .foregroundColor(Color(red: 0.01, green: 0.19, blue: 0.88))
-                                            Image(systemName: "chevron.down")
-                                                .font(.system(size: 12, weight: .semibold))
-                                                .foregroundColor(Color(red: 0.01, green: 0.19, blue: 0.88))
-                                        }
-                                        .padding(.horizontal, 12)
-                                        .padding(.vertical, 8)
-                                        .background(Color.white)
-                                        .cornerRadius(8)
-                                        .shadow(color: .black.opacity(0.1), radius: 2, x: 0, y: 1)
                                     }
-                                }
-                                
-                                Spacer()
-                                
-                                Button(action: swapCurrencies) {
-                                    ZStack {
-                                        Circle()
-                                            .fill(
-                                                LinearGradient(
-                                                    gradient: Gradient(colors: [
-                                                        Color(red: 0.01, green: 0.19, blue: 0.88),
-                                                        Color(red: 0.24, green: 0.35, blue: 1.0)
-                                                    ]),
-                                                    startPoint: .topLeading,
-                                                    endPoint: .bottomTrailing
-                                                )
-                                            )
-                                            .frame(width: 50, height: 50)
-                                            .shadow(color: Color(red: 0.01, green: 0.19, blue: 0.88).opacity(0.4), radius: 8, x: 0, y: 4)
-                                        
-                                        Image(systemName: "arrow.up.arrow.down")
+                                } label: {
+                                    HStack {
+                                        Text(fromCurrency)
                                             .font(.system(size: 20, weight: .bold))
-                                            .foregroundColor(.white)
-                                            .rotationEffect(.degrees(isSwapping ? 180 : 0))
-                                            .scaleEffect(isSwapping ? 1.2 : 1.0)
-                                            .animation(.spring(response: 0.5, dampingFraction: 0.6), value: isSwapping)
+                                            .foregroundColor(Color(red: 0.01, green: 0.19, blue: 0.88))
+                                        Spacer()
+                                        Image(systemName: "chevron.down")
+                                            .font(.system(size: 12, weight: .semibold))
+                                            .foregroundColor(Color(red: 0.01, green: 0.19, blue: 0.88))
                                     }
-                                    .scaleEffect(isSwapping ? 0.95 : 1.0)
-                                    .animation(.spring(response: 0.3, dampingFraction: 0.7), value: isSwapping)
+                                    .padding(.horizontal, 16)
+                                    .padding(.vertical, 12)
+                                    .background(Color.white)
+                                    .cornerRadius(12)
+                                    .shadow(color: .black.opacity(0.1), radius: 2, x: 0, y: 1)
+                                }
+                            }
+                            
+                            // Swap Button - Centered with better spacing
+                            HStack {
+                                Spacer()
+                                
+                                VStack(spacing: 8) {
+                                    // Direction arrow
+                                    HStack(spacing: 4) {
+                                        Image(systemName: "arrow.right")
+                                            .font(.system(size: 16, weight: .semibold))
+                                            .foregroundColor(Color(red: 0.01, green: 0.19, blue: 0.88).opacity(0.6))
+                                        
+                                        Text("Convert")
+                                            .font(.system(size: 12, weight: .medium))
+                                            .foregroundColor(Color(red: 0.01, green: 0.19, blue: 0.88).opacity(0.6))
+                                    }
+                                    
+                                    Button(action: swapCurrencies) {
+                                        ZStack {
+                                            Circle()
+                                                .fill(
+                                                    LinearGradient(
+                                                        gradient: Gradient(colors: [
+                                                            Color(red: 0.01, green: 0.19, blue: 0.88),
+                                                            Color(red: 0.24, green: 0.35, blue: 1.0)
+                                                        ]),
+                                                        startPoint: .topLeading,
+                                                        endPoint: .bottomTrailing
+                                                    )
+                                                )
+                                                .frame(width: 56, height: 56)
+                                                .shadow(color: Color(red: 0.01, green: 0.19, blue: 0.88).opacity(0.4), radius: 8, x: 0, y: 4)
+                                            
+                                            Image(systemName: "arrow.up.arrow.down")
+                                                .font(.system(size: 22, weight: .bold))
+                                                .foregroundColor(.white)
+                                                .rotationEffect(.degrees(isSwapping ? 180 : 0))
+                                                .scaleEffect(isSwapping ? 1.2 : 1.0)
+                                                .animation(.spring(response: 0.5, dampingFraction: 0.6), value: isSwapping)
+                                        }
+                                        .scaleEffect(isSwapping ? 0.95 : 1.0)
+                                        .animation(.spring(response: 0.3, dampingFraction: 0.7), value: isSwapping)
+                                    }
                                 }
                                 
                                 Spacer()
+                            }
+                            
+                            // To Currency Section
+                            VStack(alignment: .leading, spacing: 8) {
+                                Text("To")
+                                    .font(.caption)
+                                    .foregroundColor(.secondary)
+                                    .padding(.leading, 4)
                                 
-                                VStack(alignment: .trailing, spacing: 4) {
-                                    Text("To")
-                                        .font(.caption)
-                                        .foregroundColor(.secondary)
-                                    
-                                    Menu {
-                                        ForEach(currencies, id: \.self) { currency in
-                                            Button(action: {
-                                                toCurrency = currency
-                                                calculateResult()
-                                            }) {
-                                                HStack {
-                                                    Text(currency)
-                                                        .font(.system(size: 16, weight: .bold))
-                                                    Text(getCurrencyName(currency))
-                                                        .font(.system(size: 14, weight: .medium))
-                                                        .foregroundColor(.secondary)
-                                                }
+                                Menu {
+                                    ForEach(currencies, id: \.self) { currency in
+                                        Button(action: {
+                                            toCurrency = currency
+                                            calculateResult()
+                                        }) {
+                                            HStack {
+                                                Text(currency)
+                                                    .font(.system(size: 16, weight: .bold))
+                                                Text(getCurrencyName(currency))
+                                                    .font(.system(size: 14, weight: .medium))
+                                                    .foregroundColor(.secondary)
                                             }
                                         }
-                                    } label: {
-                                        HStack {
-                                            Text(toCurrency)
-                                                .font(.system(size: 20, weight: .bold))
-                                                .foregroundColor(Color(red: 0.01, green: 0.19, blue: 0.88))
-                                            Image(systemName: "chevron.down")
-                                                .font(.system(size: 12, weight: .semibold))
-                                                .foregroundColor(Color(red: 0.01, green: 0.19, blue: 0.88))
-                                        }
-                                        .padding(.horizontal, 12)
-                                        .padding(.vertical, 8)
-                                        .background(Color.white)
-                                        .cornerRadius(8)
-                                        .shadow(color: .black.opacity(0.1), radius: 2, x: 0, y: 1)
                                     }
+                                } label: {
+                                    HStack {
+                                        Text(toCurrency)
+                                            .font(.system(size: 20, weight: .bold))
+                                            .foregroundColor(Color(red: 0.01, green: 0.19, blue: 0.88))
+                                        Spacer()
+                                        Image(systemName: "chevron.down")
+                                            .font(.system(size: 12, weight: .semibold))
+                                            .foregroundColor(Color(red: 0.01, green: 0.19, blue: 0.88))
+                                    }
+                                    .padding(.horizontal, 16)
+                                    .padding(.vertical, 12)
+                                    .background(Color.white)
+                                    .cornerRadius(12)
+                                    .shadow(color: .black.opacity(0.1), radius: 2, x: 0, y: 1)
                                 }
                             }
                         }
