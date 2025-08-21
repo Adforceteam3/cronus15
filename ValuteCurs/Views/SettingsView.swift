@@ -136,15 +136,15 @@ struct SettingsView: View {
         
         switch title {
         case "Terms":
-            if let url = URL(string: "https://google.com") {
+            if let url = URL(string: "https://sites.google.com/adforcegroup.com/id6751343257") {
                 UIApplication.shared.open(url)
             }
         case "Privacy":
-            if let url = URL(string: "https://google.com") {
+            if let url = URL(string: "https://sites.google.com/adforcegroup.com/id-6751343257") {
                 UIApplication.shared.open(url)
             }
         case "Contact":
-            if let url = URL(string: "https://google.com") {
+            if let url = URL(string: "https://forms.gle/dEcaXgMUYYpQuyz88") {
                 UIApplication.shared.open(url)
             }
         case "Rate App":
