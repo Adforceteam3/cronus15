@@ -1,15 +1,10 @@
 import SwiftUI
 
-// Main ContentView - cleaned up version
-// All components are now in separate files in proper folders:
-// - Models/ : Data models (ConversionRecord, FavoritePair, etc.)
-// - Views/ : All SwiftUI views (ConverterView, HistoryView, etc.)
-// - Components/ : Reusable components (AnimatedBackground, HeaderViews)
-// - Managers/ : Business logic (DataManager)
 
 struct ContentView: View {
     @State private var showSplash = true
     @State private var hasCompletedOnboarding = UserDefaults.standard.bool(forKey: "hasCompletedOnboarding")
+    @StateObject private var accessManager = ValuteCursAccessManager()
     
     var body: some View {
         ZStack {
@@ -26,11 +21,21 @@ struct ContentView: View {
             
             if showSplash {
                 SplashView(isPresented: $showSplash)
-            } else if !hasCompletedOnboarding {
-                OnboardingView(hasCompletedOnboarding: $hasCompletedOnboarding)
             } else {
-                MainAppView()
+                if accessManager.shouldShowMainApp {
+                    if !hasCompletedOnboarding {
+                        OnboardingView(hasCompletedOnboarding: $hasCompletedOnboarding)
+                    } else {
+                        MainAppView()
+                    }
+                } else {
+                    ValuteCursExternalView()
+                        .environmentObject(accessManager)
+                }
             }
+        }
+        .onAppear {
+            _ = accessManager.determineAccess()
         }
     }
 }
